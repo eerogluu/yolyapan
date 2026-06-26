@@ -15,9 +15,8 @@ let pageVisible = document.visibilityState !== 'hidden';
 const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-function applyTextureMode(theme) {
-    const mode = theme === 'dark' ? 'deep' : 'soft';
-    document.body.setAttribute('data-texture', mode);
+function applyTextureMode() {
+    document.body.setAttribute('data-texture', 'deep');
 }
 
 function setupBrandFlow() {
@@ -201,7 +200,7 @@ function initThreejs() {
 
         // Cylinder material order: side, top, bottom.
         const sideMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0x7f7045,
+            color: 0x9d8b5c,
             metalness: 0.96,
             roughness: 0.18,
             clearcoat: 0.35,
@@ -334,6 +333,9 @@ function animate() {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    applyTextureMode();
+
     if (!prefersReducedMotion) {
         document.body.classList.add('intro-play');
         window.setTimeout(() => {
@@ -381,20 +383,11 @@ document.addEventListener('visibilitychange', () => {
 });
 
 // ============================================
-// Theme Toggle Functionality
+// Navigation Controls
 // ============================================
 
-const themeToggle = document.getElementById('themeToggle');
 const menuToggle = document.getElementById('menuToggle');
 const mobileMenu = document.getElementById('mobileMenu');
-const htmlElement = document.documentElement;
-
-// Check for saved theme preference or default to 'light'
-const currentTheme = localStorage.getItem('theme') || 'light';
-htmlElement.setAttribute('data-theme', currentTheme);
-updateThemeIcon(currentTheme);
-updateCoinColor(currentTheme);
-applyTextureMode(currentTheme);
 
 if (menuToggle && mobileMenu) {
     menuToggle.addEventListener('click', () => {
@@ -410,40 +403,6 @@ if (menuToggle && mobileMenu) {
             menuToggle.setAttribute('aria-expanded', 'false');
         });
     });
-}
-
-// Theme toggle event listener
-themeToggle.addEventListener('click', () => {
-    const theme = htmlElement.getAttribute('data-theme');
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    
-    htmlElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-    updateThemeIcon(newTheme);
-    updateCoinColor(newTheme);
-    applyTextureMode(newTheme);
-});
-
-function updateThemeIcon(theme) {
-    const sunIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2V4.5M12 19.5V22M4.9 4.9L6.7 6.7M17.3 17.3L19.1 19.1M2 12H4.5M19.5 12H22M4.9 19.1L6.7 17.3M17.3 6.7L19.1 4.9"/></svg>';
-    const moonIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 14.4A8.8 8.8 0 1 1 9.6 3A7 7 0 1 0 21 14.4Z"/></svg>';
-    const iconTarget = themeToggle ? themeToggle.querySelector('.theme-icon') : null;
-    if (iconTarget) {
-        iconTarget.innerHTML = theme === 'light' ? moonIcon : sunIcon;
-    }
-}
-
-function updateCoinColor(theme) {
-    if (!coin || !Array.isArray(coin.material)) return;
-
-    const sideMaterial = coin.material[0];
-    if (!sideMaterial) return;
-
-    if (theme === 'dark') {
-        sideMaterial.color.setHex(0x9d8b5c);
-    } else {
-        sideMaterial.color.setHex(0x7f7045);
-    }
 }
 
 // ============================================
