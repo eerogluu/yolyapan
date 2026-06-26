@@ -9,6 +9,47 @@ let isDragging = false;
 let lastPointerX = 0;
 let lastPointerY = 0;
 const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function updateGlobalPointerEffects(x, y) {
+    if (prefersReducedMotion) return;
+
+    const px = ((x / window.innerWidth) * 100).toFixed(2) + '%';
+    const py = ((y / window.innerHeight) * 100).toFixed(2) + '%';
+    document.documentElement.style.setProperty('--mouse-x', px);
+    document.documentElement.style.setProperty('--mouse-y', py);
+}
+
+function updateScrollProgress() {
+    const maxScrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = maxScrollable > 0 ? window.scrollY / maxScrollable : 0;
+    document.documentElement.style.setProperty('--scroll-progress', String(Math.min(Math.max(progress, 0), 1)));
+}
+
+function setupCardTilt() {
+    if (isCoarsePointer || prefersReducedMotion) return;
+
+    const cards = document.querySelectorAll('.product-card, .service-item, .studio-card');
+
+    cards.forEach(card => {
+        card.classList.add('tilt-card');
+
+        card.addEventListener('pointermove', (event) => {
+            const rect = card.getBoundingClientRect();
+            const relX = (event.clientX - rect.left) / rect.width;
+            const relY = (event.clientY - rect.top) / rect.height;
+
+            const rotateY = (relX - 0.5) * 8;
+            const rotateX = (0.5 - relY) * 7;
+
+            card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-4px)`;
+        });
+
+        card.addEventListener('pointerleave', () => {
+            card.style.transform = '';
+        });
+    });
+}
 
 function initThreejs() {
     const container = document.getElementById('canvas-container');
@@ -90,7 +131,12 @@ function initThreejs() {
 
     // Mouse tracking
     if (!isCoarsePointer) {
-        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mousemove', (event) => {
+            onMouseMove(event);
+            updateGlobalPointerEffects(event.clientX, event.clientY);
+        });
+    } else {
+        updateGlobalPointerEffects(window.innerWidth * 0.5, window.innerHeight * 0.25);
     }
     renderer.domElement.addEventListener('pointerdown', onPointerDown);
     window.addEventListener('pointerup', onPointerUp);
@@ -167,7 +213,18 @@ function animate() {
 }
 
 // Initialize on page load
-document.addEventListener('DOMContentLoaded', initThreejs);
+document.addEventListener('DOMContentLoaded', () => {
+    if (!prefersReducedMotion) {
+        document.body.classList.add('intro-play');
+        window.setTimeout(() => {
+            document.body.classList.remove('intro-play');
+        }, 2200);
+    }
+
+    initThreejs();
+    setupCardTilt();
+    updateScrollProgress();
+});
 
 // ============================================
 // Theme Toggle Functionality
@@ -308,6 +365,7 @@ revealNodes.forEach(element => {
 const navbar = document.querySelector('.navbar');
 window.addEventListener('scroll', () => {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    updateScrollProgress();
     
     if (scrollTop > 100) {
         navbar.style.boxShadow = 'var(--shadow)';
