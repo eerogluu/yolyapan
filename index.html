@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yolyapan & Co. | Stratejik Marka Mimarlığı</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-section">
+                <img src="logotransparent.png" alt="Yolyapan & Co. Logo" class="logo">
+                <span class="brand-name">Yolyapan & Co.</span>
+            </div>
+            <button class="menu-toggle" id="menuToggle" aria-label="Menüyü aç" aria-expanded="false" aria-controls="mobileMenu">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="nav-links" id="desktopNav">
+                <a href="#vizyon" class="nav-link">Vizyon</a>
+                <a href="#degerler" class="nav-link">Değerler</a>
+                <a href="#markalar" class="nav-link">Markalar</a>
+                <a href="#iletisim" class="nav-link">İletişim</a>
+            </div>
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">
+                <span class="theme-icon" aria-hidden="true"></span>
+            </button>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="#vizyon" class="mobile-link">Vizyon</a>
+            <a href="#degerler" class="mobile-link">Değerler</a>
+            <a href="#markalar" class="mobile-link">Markalar</a>
+            <a href="#studios" class="mobile-link">Stüdyo Sayfaları</a>
+            <a href="#iletisim" class="mobile-link">İletişim</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <p class="hero-kicker">Stratejik Marka Evi</p>
+            <h1 class="hero-title"><strong>Yolyapan</strong> & Co.<br>İnsan Odaklı Marka Mimarisi</h1>
+            <p class="hero-subtitle">Fikirleri güçlü markalara dönüştürerek, estetik ve stratejiyi aynı çizgide buluşturuyoruz.</p>
+            <div class="hero-buttons">
+                <a href="#markalar" class="btn btn-primary">Markaları Keşfet</a>
+                <a href="#vizyon" class="btn btn-secondary">Vizyonumuz</a>
+            </div>
+        </div>
+        <div class="hero-decoration">
+            <div id="canvas-container"></div>
+        </div>
+    </section>
+
+    <section id="vizyon" class="about">
+        <div class="container">
+            <p class="section-overline">Yolyapan & Co.</p>
+            <h2 class="section-title">Vizyon</h2>
+            <div class="about-grid">
+                <div class="about-content">
+                    <p>Fikirleri markalara dönüştürerek, insanlara değer katan ve kalıcı izler bırakan güçlü şirketler inşa etmek.</p>
+                    <p>Her marka yolculuğunu sadece görünürlük değil, karakter, anlam ve sürdürülebilir büyüme ekseninde tasarlıyoruz.</p>
+                </div>
+                <div class="about-stats">
+                    <div class="stat reveal">
+                        <span class="stat-number">15+</span>
+                        <span class="stat-label">Aktif Marka Yolculuğu</span>
+                    </div>
+                    <div class="stat reveal">
+                        <span class="stat-number">3</span>
+                        <span class="stat-label">Temel Disiplin: Strateji, Tasarım, Büyüme</span>
+                    </div>
+                    <div class="stat reveal">
+                        <span class="stat-number">360°</span>
+                        <span class="stat-label">Marka Deneyimi</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="degerler" class="products">
+        <div class="container">
+            <p class="section-overline">Kurumsal Felsefe</p>
+            <h2 class="section-title">Değerlerimiz</h2>
+            <div class="products-grid">
+                <div class="product-card reveal">
+                    <span class="value-mark" aria-hidden="true">01</span>
+                    <h3>Zarafet</h3>
+                    <p>Her detayda estetik arar, markanın duruşunu ince ve rafine bir dilde görünür kılarız.</p>
+                </div>
+                <div class="product-card reveal">
+                    <span class="value-mark" aria-hidden="true">02</span>
+                    <h3>Strateji</h3>
+                    <p>Veri ve vizyonu aynı çerçevede yorumlar, kararları ölçülebilir hedeflere bağlarız.</p>
+                </div>
+                <div class="product-card reveal">
+                    <span class="value-mark" aria-hidden="true">03</span>
+                    <h3>Sürdürülebilirlik</h3>
+                    <p>Uzun vadeli marka değeri üretir, günü değil geleceği kazandıran bir yapı kurarız.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="markalar" class="services">
+        <div class="container">
+            <p class="section-overline">Portföy</p>
+            <h2 class="section-title">Markalarımız</h2>
+            <div class="services-grid">
+                <div class="service-item reveal">
+                    <img src="vialunlogo.png" alt="Vialun Logo" class="service-logo">
+                    <h3>Vialun</h3>
+                    <p>Zarif takı ve aksesuar markası. Modern kadının estetik ve zamansız stil ihtiyacını seçkin bir çizgide sunar.</p>
+                    <ul class="service-meta">
+                        <li>Zarafet</li>
+                        <li>Kalite</li>
+                        <li>Zamansız Stil</li>
+                    </ul>
+                </div>
+                <div class="service-item reveal">
+                    <img src="sapagrowthlogo.jpeg" alt="Sapa Growth Logo" class="service-logo">
+                    <h3>Sapa Growth</h3>
+                    <p>Büyüme odaklı dijital stüdyo. İşletmeler için içerik, tasarım ve sosyal medya stratejisini tek potada birleştirir.</p>
+                    <ul class="service-meta">
+                        <li>Strateji</li>
+                        <li>Tasarım</li>
+                        <li>Büyüme</li>
+                    </ul>
+                </div>
+                <div class="service-item reveal">
+                    <img src="oryncalogo.png" alt="Orynca Logo" class="service-logo">
+                    <h3>Orynca</h3>
+                    <p>Premium telefon kılıfı ve tasarım koleksiyonları. Güçlü stil, işlev ve karakteri aynı dilde buluşturur.</p>
+                    <ul class="service-meta">
+                        <li>Estetik</li>
+                        <li>Detay</li>
+                        <li>Karakter</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="studios" class="brand-studios">
+        <div class="container">
+            <p class="section-overline">Mikro Landing</p>
+            <h2 class="section-title">Marka Stüdyoları</h2>
+            <div class="studio-grid">
+                <article class="studio-card studio-vialun reveal">
+                    <p class="studio-kicker">Vialun</p>
+                    <h3>Zarif Takı Evreni</h3>
+                    <p>Minimal zarafeti modern çizgiyle birleştiren seçki: ürün dili, koleksiyon anlatısı ve premium e-ticaret akışı.</p>
+                    <a href="#" class="studio-link">Vialun Sayfası</a>
+                </article>
+                <article class="studio-card studio-sapa reveal">
+                    <p class="studio-kicker">Sapa Growth</p>
+                    <h3>Büyüme Odaklı Dijital Stüdyo</h3>
+                    <p>İçerik, tasarım ve performansın tek stratejide buluştuğu sistem: marka görünürlüğünden satışa uzanan yol haritası.</p>
+                    <a href="#" class="studio-link">Sapa Growth Sayfası</a>
+                </article>
+                <article class="studio-card studio-orynca reveal">
+                    <p class="studio-kicker">Orynca</p>
+                    <h3>Premium Koleksiyon Dili</h3>
+                    <p>Güçlü karakteri floral estetikle buluşturan anlatı: ürün kimliği, görsel hikaye ve kapsül koleksiyon yaklaşımı.</p>
+                    <a href="#" class="studio-link">Orynca Sayfası</a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="iletisim" class="contact">
+        <div class="container">
+            <h2 class="section-title">İletişim</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Markanıza Yön Verelim</h3>
+                    <p>Yeni marka oluşumu, yeniden konumlama veya büyüme stratejisi için bize yazın. İlk toplantıda markanızın yol haritasını birlikte çıkaralım.</p>
+                    <div class="contact-details">
+                        <p><strong>Email:</strong> info@yolyapan.com</p>
+                        <p><strong>Telefon:</strong> +90 (xxx) xxx-xxxx</p>
+                        <p><strong>Konum:</strong> İstanbul, Türkiye</p>
+                    </div>
+                </div>
+                <form class="contact-form">
+                    <input type="text" placeholder="Ad Soyad" required>
+                    <input type="email" placeholder="E-posta Adresi" required>
+                    <input type="text" placeholder="Marka / Şirket Adı">
+                    <textarea placeholder="Proje hedefinizi kısaca paylaşın" rows="5" required></textarea>
+                    <button type="submit" class="btn btn-primary">Toplantı Talep Et</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Yolyapan & Co. Tüm hakları saklıdır.</p>
+            <div class="social-links">
+                <a href="#" class="social-link">LinkedIn</a>
+                <a href="#" class="social-link">Behance</a>
+                <a href="#" class="social-link">Instagram</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
