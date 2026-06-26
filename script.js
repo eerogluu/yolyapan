@@ -8,6 +8,10 @@ let targetRotationX = 1.35, targetRotationY = 0.06;
 let isDragging = false;
 let lastPointerX = 0;
 let lastPointerY = 0;
+let animationFrameId = null;
+let brandFlowTimerId = null;
+let brandFlowClearId = null;
+let pageVisible = document.visibilityState !== 'hidden';
 const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -26,7 +30,9 @@ function setupBrandFlow() {
     let activeIndex = items.findIndex(item => item.classList.contains('is-active'));
     if (activeIndex < 0) activeIndex = 0;
 
-    window.setInterval(() => {
+    const advanceFlow = () => {
+        if (!pageVisible) return;
+
         const prev = items[activeIndex];
         activeIndex = (activeIndex + 1) % items.length;
         const next = items[activeIndex];
@@ -38,10 +44,14 @@ function setupBrandFlow() {
         // Sync the 3D hero coin with brand flow changes for a cinematic handoff.
         targetRotationY = Math.max(-0.95, Math.min(0.95, targetRotationY + 0.18));
 
-        window.setTimeout(() => {
+        brandFlowClearId = window.setTimeout(() => {
             track.classList.remove('is-advancing');
         }, 700);
-    }, prefersReducedMotion ? 5600 : 3800);
+
+        brandFlowTimerId = window.setTimeout(advanceFlow, prefersReducedMotion ? 5600 : 3800);
+    };
+
+    brandFlowTimerId = window.setTimeout(advanceFlow, prefersReducedMotion ? 5600 : 3800);
 }
 
 function setupProductTheater() {
@@ -176,7 +186,7 @@ function initThreejs() {
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
     renderer.setClearColor(0x000000, 0);
-    const targetPixelRatio = isCoarsePointer ? Math.min(window.devicePixelRatio, 1.5) : Math.min(window.devicePixelRatio, 2);
+    const targetPixelRatio = isCoarsePointer ? Math.min(window.devicePixelRatio, 1.2) : Math.min(window.devicePixelRatio, 1.6);
     renderer.setPixelRatio(targetPixelRatio);
     renderer.outputEncoding = THREE.sRGBEncoding;
     container.appendChild(renderer.domElement);
@@ -306,7 +316,9 @@ function onWindowResize() {
 }
 
 function animate() {
-    requestAnimationFrame(animate);
+    if (!pageVisible) return;
+
+    animationFrameId = requestAnimationFrame(animate);
 
     if (coin) {
         // Smooth rotation with mouse tracking
@@ -335,6 +347,37 @@ document.addEventListener('DOMContentLoaded', () => {
     setupProductTheater();
     setupSectionTitleStory();
     updateScrollProgress();
+});
+
+document.addEventListener('visibilitychange', () => {
+    pageVisible = document.visibilityState !== 'hidden';
+
+    if (!pageVisible) {
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+        }
+
+        if (brandFlowTimerId) {
+            clearTimeout(brandFlowTimerId);
+            brandFlowTimerId = null;
+        }
+
+        if (brandFlowClearId) {
+            clearTimeout(brandFlowClearId);
+            brandFlowClearId = null;
+        }
+
+        return;
+    }
+
+    if (!animationFrameId) {
+        animate();
+    }
+
+    if (document.getElementById('brandFlowTrack') && !brandFlowTimerId) {
+        setupBrandFlow();
+    }
 });
 
 // ============================================
