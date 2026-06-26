@@ -3,12 +3,6 @@
 // ============================================
 
 let scene, camera, renderer, coin;
-let mouseX = 0, mouseY = 0;
-let targetRotationX = 1.35, targetRotationY = 0.06;
-let isDragging = false;
-let lastPointerX = 0;
-let lastPointerY = 0;
-let animationFrameId = null;
 let brandFlowTimerId = null;
 let brandFlowClearId = null;
 let pageVisible = document.visibilityState !== 'hidden';
@@ -39,9 +33,6 @@ function setupBrandFlow() {
         prev.classList.remove('is-active');
         next.classList.add('is-active');
         track.classList.add('is-advancing');
-
-        // Sync the 3D hero coin with brand flow changes for a cinematic handoff.
-        targetRotationY = Math.max(-0.95, Math.min(0.95, targetRotationY + 0.18));
 
         brandFlowClearId = window.setTimeout(() => {
             track.classList.remove('is-advancing');
@@ -222,6 +213,7 @@ function initThreejs() {
         coin.rotation.x = 1.35;
         coin.rotation.y = 0.06;
         scene.add(coin);
+        renderScene();
     }, undefined, function(error) {
         console.error('Transparent logo yuklenemedi:', error);
     });
@@ -246,58 +238,14 @@ function initThreejs() {
     pointLight.position.set(0.8, 1.2, 2.4);
     scene.add(pointLight);
 
-    // Mouse tracking
     if (!isCoarsePointer) {
         document.addEventListener('mousemove', (event) => {
-            onMouseMove(event);
             updateGlobalPointerEffects(event.clientX, event.clientY);
         });
     } else {
         updateGlobalPointerEffects(window.innerWidth * 0.5, window.innerHeight * 0.25);
     }
-    renderer.domElement.addEventListener('pointerdown', onPointerDown);
-    window.addEventListener('pointerup', onPointerUp);
-    window.addEventListener('pointermove', onPointerMove);
     window.addEventListener('resize', onWindowResize);
-
-    // Animation loop
-    animate();
-}
-
-function onMouseMove(event) {
-    if (isDragging) return;
-
-    mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-    mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-    
-    targetRotationY = mouseX * 0.55;
-    targetRotationX = 1.35 + (mouseY * 0.22);
-    targetRotationX = Math.max(1.02, Math.min(1.72, targetRotationX));
-}
-
-function onPointerDown(event) {
-    isDragging = true;
-    lastPointerX = event.clientX;
-    lastPointerY = event.clientY;
-}
-
-function onPointerUp() {
-    isDragging = false;
-}
-
-function onPointerMove(event) {
-    if (!isDragging || !coin) return;
-
-    const deltaX = event.clientX - lastPointerX;
-    const deltaY = event.clientY - lastPointerY;
-
-    targetRotationY += deltaX * 0.006;
-    targetRotationX += deltaY * 0.0045;
-    targetRotationY = Math.max(-0.95, Math.min(0.95, targetRotationY));
-    targetRotationX = Math.max(0.95, Math.min(1.9, targetRotationX));
-
-    lastPointerX = event.clientX;
-    lastPointerY = event.clientY;
 }
 
 function onWindowResize() {
@@ -312,22 +260,11 @@ function onWindowResize() {
     camera.updateProjectionMatrix();
     renderer.setSize(width, height);
     renderer.setPixelRatio(targetPixelRatio);
+    renderScene();
 }
 
-function animate() {
-    if (!pageVisible) return;
-
-    animationFrameId = requestAnimationFrame(animate);
-
-    if (coin) {
-        // Smooth rotation with mouse tracking
-        coin.rotation.x += (targetRotationX - coin.rotation.x) * 0.05;
-        coin.rotation.y += (targetRotationY - coin.rotation.y) * 0.05;
-        
-        // Continuous slow rotation when not moving
-        coin.rotation.y += isCoarsePointer ? 0.00035 : 0.00055;
-    }
-
+function renderScene() {
+    if (!renderer || !camera || !pageVisible) return;
     renderer.render(scene, camera);
 }
 
@@ -355,11 +292,6 @@ document.addEventListener('visibilitychange', () => {
     pageVisible = document.visibilityState !== 'hidden';
 
     if (!pageVisible) {
-        if (animationFrameId) {
-            cancelAnimationFrame(animationFrameId);
-            animationFrameId = null;
-        }
-
         if (brandFlowTimerId) {
             clearTimeout(brandFlowTimerId);
             brandFlowTimerId = null;
@@ -373,9 +305,7 @@ document.addEventListener('visibilitychange', () => {
         return;
     }
 
-    if (!animationFrameId) {
-        animate();
-    }
+    renderScene();
 
     if (document.getElementById('brandFlowTrack') && !brandFlowTimerId) {
         setupBrandFlow();
