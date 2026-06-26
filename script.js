@@ -11,6 +11,114 @@ let lastPointerY = 0;
 const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+function applyTextureMode(theme) {
+    const mode = theme === 'dark' ? 'deep' : 'soft';
+    document.body.setAttribute('data-texture', mode);
+}
+
+function setupBrandFlow() {
+    const track = document.getElementById('brandFlowTrack');
+    if (!track) return;
+
+    const items = Array.from(track.querySelectorAll('.brand-flow-item'));
+    if (items.length < 2) return;
+
+    let activeIndex = items.findIndex(item => item.classList.contains('is-active'));
+    if (activeIndex < 0) activeIndex = 0;
+
+    window.setInterval(() => {
+        const prev = items[activeIndex];
+        activeIndex = (activeIndex + 1) % items.length;
+        const next = items[activeIndex];
+
+        prev.classList.remove('is-active');
+        next.classList.add('is-active');
+        track.classList.add('is-advancing');
+
+        // Sync the 3D hero coin with brand flow changes for a cinematic handoff.
+        targetRotationY = Math.max(-0.95, Math.min(0.95, targetRotationY + 0.18));
+
+        window.setTimeout(() => {
+            track.classList.remove('is-advancing');
+        }, 700);
+    }, prefersReducedMotion ? 5600 : 3800);
+}
+
+function setupProductTheater() {
+    const cards = Array.from(document.querySelectorAll('.service-item'));
+    if (!cards.length) return;
+
+    const closeAll = (exceptCard = null) => {
+        cards.forEach(card => {
+            if (exceptCard && card === exceptCard) return;
+            card.classList.remove('is-theater-open');
+            const panel = card.querySelector('.product-theater');
+            const button = card.querySelector('.theater-toggle');
+            if (panel) panel.setAttribute('aria-hidden', 'true');
+            if (button) button.setAttribute('aria-expanded', 'false');
+        });
+    };
+
+    cards.forEach(card => {
+        const panel = card.querySelector('.product-theater');
+        const button = card.querySelector('.theater-toggle');
+        if (!panel || !button) return;
+
+        button.addEventListener('click', () => {
+            const willOpen = !card.classList.contains('is-theater-open');
+            closeAll(willOpen ? card : null);
+            card.classList.toggle('is-theater-open', willOpen);
+            panel.setAttribute('aria-hidden', String(!willOpen));
+            button.setAttribute('aria-expanded', String(willOpen));
+        });
+
+        if (!isCoarsePointer) {
+            card.addEventListener('mouseenter', () => {
+                closeAll(card);
+                card.classList.add('is-theater-open');
+                panel.setAttribute('aria-hidden', 'false');
+                button.setAttribute('aria-expanded', 'true');
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.classList.remove('is-theater-open');
+                panel.setAttribute('aria-hidden', 'true');
+                button.setAttribute('aria-expanded', 'false');
+            });
+        }
+    });
+}
+
+function setupSectionTitleStory() {
+    const titles = Array.from(document.querySelectorAll('.section-title'));
+    if (!titles.length) return;
+
+    const titleObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-inview');
+            }
+        });
+    }, { threshold: 0.25 });
+
+    titles.forEach(title => titleObserver.observe(title));
+
+    const updateTitleFocus = () => {
+        const viewportMid = window.innerHeight * 0.42;
+        titles.forEach(title => {
+            const rect = title.getBoundingClientRect();
+            const titleMid = rect.top + (rect.height / 2);
+            const distance = Math.abs(titleMid - viewportMid);
+            const normalized = 1 - Math.min(distance / (window.innerHeight * 0.7), 1);
+            title.style.setProperty('--title-focus', normalized.toFixed(3));
+        });
+    };
+
+    updateTitleFocus();
+    window.addEventListener('scroll', updateTitleFocus, { passive: true });
+    window.addEventListener('resize', updateTitleFocus);
+}
+
 function updateGlobalPointerEffects(x, y) {
     if (prefersReducedMotion) return;
 
@@ -223,6 +331,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initThreejs();
     setupCardTilt();
+    setupBrandFlow();
+    setupProductTheater();
+    setupSectionTitleStory();
     updateScrollProgress();
 });
 
@@ -240,6 +351,7 @@ const currentTheme = localStorage.getItem('theme') || 'light';
 htmlElement.setAttribute('data-theme', currentTheme);
 updateThemeIcon(currentTheme);
 updateCoinColor(currentTheme);
+applyTextureMode(currentTheme);
 
 if (menuToggle && mobileMenu) {
     menuToggle.addEventListener('click', () => {
@@ -266,6 +378,7 @@ themeToggle.addEventListener('click', () => {
     localStorage.setItem('theme', newTheme);
     updateThemeIcon(newTheme);
     updateCoinColor(newTheme);
+    applyTextureMode(newTheme);
 });
 
 function updateThemeIcon(theme) {
