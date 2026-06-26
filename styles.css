@@ -179,30 +179,41 @@ body[data-texture='deep']::after {
 }
 
 .logo-shell {
+    position: relative;
     width: 56px;
     height: 56px;
     border-radius: 50%;
     display: grid;
     place-items: center;
     border: 1px solid rgba(157, 139, 92, 0.5);
-    background:
-        radial-gradient(circle at 30% 25%, rgba(233, 214, 170, 0.22), rgba(22, 17, 11, 0.92) 70%),
-        linear-gradient(150deg, rgba(201, 178, 121, 0.12), rgba(10, 8, 5, 0.9));
+    background: #050402;
     box-shadow:
-        inset 0 1px 0 rgba(255, 245, 217, 0.35),
+        inset 0 1px 0 rgba(255, 245, 217, 0.22),
         0 10px 18px rgba(0, 0, 0, 0.2),
         0 0 0 1px rgba(201, 178, 121, 0.18);
     overflow: hidden;
-    padding: 2px;
+    padding: 0;
+}
+
+.logo-shell::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    box-shadow:
+        inset 0 0 0 1px rgba(214, 191, 145, 0.34),
+        inset 0 8px 14px rgba(255, 245, 217, 0.06);
+    pointer-events: none;
 }
 
 .logo {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    object-fit: contain;
+    object-fit: cover;
     object-position: center;
-    padding: 1px;
+    padding: 0;
+    transform: scale(1.025);
     transition: transform 0.3s var(--ease-signature);
     image-rendering: -webkit-optimize-contrast;
     image-rendering: auto;
@@ -210,7 +221,7 @@ body[data-texture='deep']::after {
 }
 
 .logo:hover {
-    transform: scale(1.05) translateY(-1px);
+    transform: scale(1.06) translateY(-1px);
 }
 
 .brand-name {
@@ -892,16 +903,28 @@ canvas {
 }
 
 .service-logo-frame {
-    width: 100%;
-    min-height: 116px;
+    position: relative;
+    width: fit-content;
+    max-width: 100%;
+    min-height: 0;
     margin-bottom: 1.3rem;
-    padding: 0.85rem 1rem;
-    display: flex;
+    padding: 0.95rem 1.05rem;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     border: 1px solid rgba(157, 139, 92, 0.22);
     background: linear-gradient(160deg, rgba(250, 246, 239, 0.96), rgba(239, 232, 220, 0.9));
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 12px 24px rgba(34, 26, 18, 0.08);
+    border-radius: 18px;
+}
+
+.service-logo-frame::after {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border-radius: 12px;
+    border: 1px solid rgba(201, 178, 121, 0.12);
+    pointer-events: none;
 }
 
 [data-theme="dark"] .service-logo-frame {
@@ -920,6 +943,7 @@ canvas {
     background:
         radial-gradient(circle at 85% 18%, rgba(195, 180, 145, 0.24), transparent 35%),
         linear-gradient(160deg, rgba(248, 244, 237, 0.98), rgba(236, 230, 221, 0.95));
+    padding: 1rem 1.2rem;
 }
 
 .brand-orynca .service-logo-frame {
@@ -933,6 +957,7 @@ canvas {
         radial-gradient(circle at 14% 24%, rgba(203, 191, 160, 0.22), transparent 34%),
         linear-gradient(160deg, rgba(18, 16, 14, 0.98), rgba(10, 9, 8, 0.98));
     border-color: rgba(201, 178, 121, 0.28);
+    padding: 1rem 1.2rem;
 }
 
 [data-theme="dark"] .brand-vialun .service-logo-frame {
@@ -954,8 +979,8 @@ canvas {
 }
 
 .service-logo {
-    width: 100%;
-    max-width: 100%;
+    width: auto;
+    max-width: 220px;
     height: 78px;
     object-fit: contain;
     object-position: center;
@@ -964,9 +989,14 @@ canvas {
     transition: transform 0.35s ease, filter 0.35s ease;
 }
 
+.service-logo-sapa {
+    max-width: 248px;
+    height: 74px;
+}
+
 .service-logo-miniore {
-    max-width: 92%;
-    height: 76px;
+    max-width: 244px;
+    height: 72px;
 }
 
 .service-item:hover .service-logo {
@@ -1630,13 +1660,17 @@ canvas {
     }
 
     .service-logo-frame {
-        min-height: 104px;
-        padding: 0.9rem;
+        padding: 0.8rem 0.95rem;
+    }
+
+    .service-logo-sapa {
+        max-width: 214px;
+        height: 60px;
     }
 
     .service-logo-miniore {
-        max-width: 220px;
-        height: 64px;
+        max-width: 210px;
+        height: 60px;
     }
 
     .service-item {
@@ -1686,18 +1720,22 @@ canvas {
     }
 
     .service-logo-frame {
-        min-height: 96px;
-        padding: 0.8rem;
+        padding: 0.72rem 0.82rem;
     }
 
     .service-logo {
-        max-width: 168px;
+        max-width: 158px;
+        height: 48px;
+    }
+
+    .service-logo-sapa {
+        max-width: 184px;
         height: 52px;
     }
 
     .service-logo-miniore {
-        max-width: 190px;
-        height: 56px;
+        max-width: 180px;
+        height: 52px;
     }
 
     .section-title {
