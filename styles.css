@@ -25,6 +25,12 @@
     --surface-strong: linear-gradient(170deg, rgba(255, 252, 246, 0.98), rgba(241, 236, 227, 0.98));
     --surface-mid: linear-gradient(170deg, rgba(245, 240, 231, 0.95), rgba(236, 230, 219, 0.94));
     --surface-contact: linear-gradient(180deg, rgba(245, 241, 234, 0.98), rgba(233, 226, 214, 0.98));
+    --studio-surface: linear-gradient(152deg, rgba(252, 249, 243, 0.98), rgba(240, 233, 221, 0.96));
+    --studio-glow: rgba(157, 139, 92, 0.14);
+    --studio-title: #2a2018;
+    --studio-text: #4d453d;
+    --studio-kicker: #866f3b;
+    --studio-link: #7a6738;
     --mouse-x: 50%;
     --mouse-y: 25%;
     --scroll-progress: 0;
@@ -61,6 +67,12 @@
     --surface-strong: linear-gradient(170deg, rgba(19, 15, 10, 0.95), rgba(11, 9, 6, 0.95));
     --surface-mid: linear-gradient(170deg, rgba(18, 14, 10, 0.94), rgba(9, 7, 5, 0.95));
     --surface-contact: linear-gradient(180deg, rgba(13, 10, 7, 0.98), rgba(8, 6, 4, 1));
+    --studio-surface: linear-gradient(150deg, rgba(17, 13, 9, 0.95), rgba(9, 7, 5, 0.96));
+    --studio-glow: rgba(157, 139, 92, 0.2);
+    --studio-title: #f3ead8;
+    --studio-text: #d3cabd;
+    --studio-kicker: #b9a06b;
+    --studio-link: #c9b07b;
     --texture-opacity: 0.2;
     --texture-size-a: 2px 2px;
     --texture-size-b: 4px 4px;
@@ -981,6 +993,10 @@ canvas {
 
 .brand-studios {
     padding: 120px 40px;
+    background: linear-gradient(180deg, rgba(244, 239, 230, 0.92), rgba(236, 229, 216, 0.82));
+}
+
+[data-theme="dark"] .brand-studios {
     background: var(--surface-mid);
 }
 
@@ -996,16 +1012,20 @@ canvas {
     min-height: 340px;
     padding: 2.2rem;
     border: 1px solid rgba(157, 139, 92, 0.35);
-    background: linear-gradient(150deg, rgba(17, 13, 9, 0.95), rgba(9, 7, 5, 0.96));
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+    background: var(--studio-surface);
+    box-shadow: 0 18px 36px rgba(36, 28, 19, 0.16);
     transition: transform 0.35s var(--ease-signature), box-shadow 0.35s var(--ease-signature);
+}
+
+[data-theme="dark"] .studio-card {
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
 }
 
 .studio-card::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 80% 20%, rgba(157, 139, 92, 0.2), transparent 40%);
+    background: radial-gradient(circle at 80% 20%, var(--studio-glow), transparent 40%);
     pointer-events: none;
 }
 
@@ -1015,7 +1035,7 @@ canvas {
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 2.2px;
-    color: var(--accent-primary);
+    color: var(--studio-kicker);
     margin-bottom: 1rem;
 }
 
@@ -1025,12 +1045,13 @@ canvas {
     font-size: 1.72rem;
     margin-bottom: 1rem;
     line-height: 1.25;
+    color: var(--studio-title);
 }
 
 .studio-card p {
     position: relative;
     font-size: 1.15rem;
-    color: var(--text-secondary);
+    color: var(--studio-text);
     line-height: 1.5;
     margin-bottom: 1.4rem;
 }
@@ -1041,15 +1062,15 @@ canvas {
     font-size: 0.78rem;
     text-transform: uppercase;
     letter-spacing: 1.3px;
-    color: var(--accent-primary);
+    color: var(--studio-link);
     text-decoration: none;
     padding-bottom: 3px;
     border-bottom: 1px solid rgba(157, 139, 92, 0.42);
 }
 
 .studio-link:hover {
-    color: var(--accent-secondary);
-    border-bottom-color: var(--accent-secondary);
+    color: var(--accent-primary);
+    border-bottom-color: var(--accent-primary);
 }
 
 .tilt-card {
@@ -1065,20 +1086,20 @@ canvas {
 
 .studio-vialun {
     background-image:
-        radial-gradient(circle at 12% 8%, rgba(210, 181, 125, 0.18), transparent 35%),
-        linear-gradient(150deg, rgba(24, 18, 12, 0.95), rgba(11, 8, 6, 0.97));
+        radial-gradient(circle at 12% 8%, rgba(210, 181, 125, 0.16), transparent 35%),
+        var(--studio-surface);
 }
 
 .studio-sapa {
     background-image:
-        radial-gradient(circle at 86% 12%, rgba(204, 175, 113, 0.2), transparent 40%),
-        linear-gradient(150deg, rgba(18, 15, 10, 0.94), rgba(8, 7, 5, 0.97));
+        radial-gradient(circle at 86% 12%, rgba(204, 175, 113, 0.17), transparent 40%),
+        var(--studio-surface);
 }
 
 .studio-orynca {
     background-image:
-        radial-gradient(circle at 82% 85%, rgba(182, 140, 126, 0.17), transparent 43%),
-        linear-gradient(150deg, rgba(20, 12, 12, 0.95), rgba(8, 6, 6, 0.98));
+        radial-gradient(circle at 82% 85%, rgba(182, 140, 126, 0.15), transparent 43%),
+        var(--studio-surface);
 }
 
 .reveal {
