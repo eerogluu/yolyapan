@@ -808,10 +808,11 @@ canvas {
 }
 
 .service-item {
+    --service-card-pad: 2.5rem;
     position: relative;
     overflow: hidden;
     background: var(--surface-strong);
-    padding: 2.5rem;
+    padding: var(--service-card-pad);
     border-radius: 0;
     border: 1px solid rgba(157, 139, 92, 0.3);
     transition: all 0.3s var(--ease-signature);
@@ -833,80 +834,93 @@ canvas {
 
 .service-logo-frame {
     position: relative;
-    width: fit-content;
-    max-width: 100%;
-    min-height: 0;
-    margin-bottom: 1.3rem;
-    padding: 0.95rem 1.05rem;
-    display: inline-flex;
+    width: calc(100% + (var(--service-card-pad) * 2));
+    max-width: calc(100% + (var(--service-card-pad) * 2));
+    min-height: 132px;
+    margin: calc(var(--service-card-pad) * -1) calc(var(--service-card-pad) * -1) 1.55rem;
+    padding: 1.4rem 1.5rem 1.25rem;
+    display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(157, 139, 92, 0.22);
-    background: linear-gradient(160deg, rgba(250, 245, 237, 0.98), rgba(236, 227, 212, 0.94));
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72), 0 12px 24px rgba(88, 66, 42, 0.08);
-    border-radius: 18px;
+    border: 0;
+    background: linear-gradient(180deg, rgba(246, 238, 229, 0.92), rgba(230, 216, 196, 0.78));
+    box-shadow: inset 0 -1px 0 rgba(175, 141, 98, 0.18);
+    border-radius: 0 0 28px 28px;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.service-logo-frame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 16% 18%, rgba(255, 255, 255, 0.34), transparent 28%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.16), transparent 54%);
+    pointer-events: none;
 }
 
 .service-logo-frame::after {
     content: '';
     position: absolute;
-    inset: 6px;
-    border-radius: 12px;
-    border: 1px solid rgba(193, 160, 122, 0.18);
+    left: 1.5rem;
+    right: 1.5rem;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(175, 141, 98, 0.34), transparent);
     pointer-events: none;
 }
 
 .brand-vialun .service-logo-frame {
     background:
-        radial-gradient(circle at 15% 18%, rgba(223, 201, 164, 0.34), transparent 34%),
-        linear-gradient(160deg, rgba(254, 250, 244, 0.98), rgba(242, 235, 225, 0.94));
+        radial-gradient(circle at 15% 18%, rgba(220, 194, 145, 0.32), transparent 34%),
+        linear-gradient(180deg, rgba(250, 244, 234, 0.96), rgba(233, 220, 202, 0.84));
 }
 
 .brand-sapa .service-logo-frame {
     background:
-        radial-gradient(circle at 85% 18%, rgba(195, 180, 145, 0.24), transparent 35%),
-        linear-gradient(160deg, rgba(248, 244, 237, 0.98), rgba(236, 230, 221, 0.95));
-    padding: 1rem 1.2rem;
+        radial-gradient(circle at 85% 18%, rgba(200, 179, 140, 0.22), transparent 35%),
+        linear-gradient(180deg, rgba(236, 225, 209, 0.96), rgba(214, 196, 171, 0.88));
 }
 
 .brand-orynca .service-logo-frame {
     background:
-        radial-gradient(circle at 80% 80%, rgba(197, 165, 152, 0.24), transparent 34%),
-        linear-gradient(160deg, rgba(250, 246, 239, 0.98), rgba(238, 230, 223, 0.95));
+        radial-gradient(circle at 80% 80%, rgba(194, 163, 146, 0.22), transparent 34%),
+        linear-gradient(180deg, rgba(245, 237, 227, 0.96), rgba(230, 216, 202, 0.86));
 }
 
 .brand-miniore .service-logo-frame {
     background:
-        radial-gradient(circle at 14% 24%, rgba(205, 186, 153, 0.24), transparent 34%),
-        linear-gradient(160deg, rgba(146, 124, 98, 0.98), rgba(111, 92, 73, 0.98));
-    border-color: rgba(175, 141, 98, 0.3);
-    padding: 1rem 1.2rem;
+        radial-gradient(circle at 14% 24%, rgba(214, 196, 165, 0.22), transparent 34%),
+        linear-gradient(180deg, rgba(208, 191, 171, 0.98), rgba(177, 154, 128, 0.96));
 }
 
 .service-logo {
+    position: relative;
+    z-index: 1;
     width: auto;
     max-width: 220px;
-    height: 78px;
+    height: 72px;
     object-fit: contain;
     object-position: center;
     margin-bottom: 0;
-    filter: saturate(0.96) contrast(1.04) drop-shadow(0 2px 5px rgba(88, 66, 42, 0.14));
+    filter: saturate(0.98) contrast(1.03) drop-shadow(0 3px 8px rgba(88, 66, 42, 0.1));
     transition: transform 0.35s ease, filter 0.35s ease;
 }
 
 .service-logo-sapa {
-    max-width: 248px;
-    height: 74px;
+    max-width: 218px;
+    height: 60px;
 }
 
 .service-logo-miniore {
-    max-width: 244px;
-    height: 72px;
+    max-width: 214px;
+    height: 60px;
 }
 
 .service-item:hover .service-logo {
-    transform: translateY(-2px) scale(1.02);
-    filter: saturate(1.03) contrast(1.06) drop-shadow(0 8px 18px rgba(175, 141, 98, 0.18));
+    transform: translateY(-1px) scale(1.015);
+    filter: saturate(1.01) contrast(1.05) drop-shadow(0 8px 16px rgba(175, 141, 98, 0.12));
 }
 
 .service-item p {
