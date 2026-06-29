@@ -10,7 +10,7 @@ const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function applyTextureMode() {
-    document.body.setAttribute('data-texture', 'deep');
+    document.body.setAttribute('data-texture', 'soft');
 }
 
 function setupBrandFlow() {
@@ -191,7 +191,7 @@ function initThreejs() {
 
         // Cylinder material order: side, top, bottom.
         const sideMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0x9d8b5c,
+            color: 0xb79a70,
             metalness: 0.96,
             roughness: 0.18,
             clearcoat: 0.35,
@@ -270,7 +270,6 @@ function renderScene() {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
-    document.documentElement.setAttribute('data-theme', 'dark');
     applyTextureMode();
 
     if (!prefersReducedMotion) {
